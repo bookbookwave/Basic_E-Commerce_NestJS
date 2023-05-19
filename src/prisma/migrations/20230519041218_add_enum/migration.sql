@@ -1,0 +1,2 @@
+-- CreateEnum
+CREATE TYPE "OrderStatus" AS ENUM ('PENDING', 'PROCESSING', 'COMPLETED', 'CANCELED');
