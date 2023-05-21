@@ -7,9 +7,10 @@ import { PrismaService } from './prisma.service';
 import { ProductModule } from './product/product.module';
 import { TokenMiddleware } from './token.middleware';
 import { OrderModule } from './order/order.module';
+import { PinModule } from './pin/pin.module';
 
 @Module({
-  imports: [AuthModule, UserModule, ProductModule, OrderModule],
+  imports: [AuthModule, UserModule, ProductModule, OrderModule, PinModule],
   controllers: [AppController],
   providers: [AppService, PrismaService],
 })
