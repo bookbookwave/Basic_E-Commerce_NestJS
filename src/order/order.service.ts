@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { OrderStatus, Order } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
-import { changeStatusDto, orderDto } from './order.dto';
+import { updateOrderStatus, orderDto } from './order.dto';
 
 @Injectable()
 export class OrderService {
   constructor(private readonly db: PrismaService) {}
 
-  changeStatus = async (input: changeStatusDto): Promise<Order> => {
+  updateOrderStatus = async (input: updateOrderStatus): Promise<Order> => {
     try {
       const order = await this.db.order.findUnique({ where: { id: input.id } });
       if (!order) {
@@ -31,7 +31,7 @@ export class OrderService {
   createOrder = async (input: orderDto): Promise<Order> => {
     try {
       const user = await this.db.user.findUnique({
-        where: { id: input.userId },
+        where: { email: input.email },
       });
       if (!user) {
         throw new Error('User not found');
@@ -63,7 +63,7 @@ export class OrderService {
           status: OrderStatus.PENDING,
           user: {
             connect: {
-              id: input.userId,
+              id: user.id,
             },
           },
         },
@@ -72,6 +72,21 @@ export class OrderService {
           user: { select: { email: true, name: true } },
         },
       });
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  orderHistory = async ({ email }): Promise<Order[]> => {
+    try {
+      const user = await this.db.user.findUnique({
+        where: { email: email },
+        select: { id: true },
+      });
+      const orderHistory = await this.db.order.findMany({
+        where: { userId: user.id },
+        include: { OrderItem: true },
+      });
+      return orderHistory;
     } catch (error) {
       throw new Error(error);
     }

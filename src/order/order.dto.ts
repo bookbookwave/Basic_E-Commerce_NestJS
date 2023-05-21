@@ -1,5 +1,5 @@
 import { OrderStatus } from '@prisma/client';
-import { IsNotEmpty } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class productDto {
   @IsNotEmpty()
@@ -10,13 +10,14 @@ export class productDto {
 }
 export class orderDto {
   @IsNotEmpty()
-  userId: string;
+  @IsEmail()
+  email: string;
 
   @IsNotEmpty()
   products: productDto[];
 }
 
-export class changeStatusDto {
+export class updateOrderStatus {
   @IsNotEmpty()
   id: number;
 

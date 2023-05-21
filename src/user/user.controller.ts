@@ -37,6 +37,7 @@ export class UserController {
     return await this.userService.deleteUser(id);
   }
 
+  @UseGuards(AuthGuard)
   @Get('profile/:email')
   async getProfile(@Param('email') email: string) {
     return await this.userService.findProfile(email);

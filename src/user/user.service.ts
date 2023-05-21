@@ -1,31 +1,48 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { hashSync, compareSync } from 'bcryptjs';
-import { User } from '@prisma/client';
+import { Order, User } from '@prisma/client';
+import { UserDto } from './user.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly db: PrismaService) {}
-  createUser = async (Input: any) => {
-    const user = await this.db.user.create({
-      data: {
-        email: Input.email,
-        password: hashSync(Input.password, 10),
-        name: Input.name,
-      },
-    });
-    return user;
-  };
-  deleteUser = async (id: string) => {
-    const user = await this.db.user.delete({ where: { id: id } });
-    if (!user) {
-      return true;
+
+  createUser = async (Input: UserDto) => {
+    try {
+      const user = await this.db.user.create({
+        data: {
+          email: Input.email,
+          password: hashSync(Input.password, 10),
+          name: Input.name,
+        },
+      });
+      return user;
+    } catch (error) {
+      throw new Error(error);
     }
-    return false;
   };
+
+  deleteUser = async (id: string): Promise<boolean> => {
+    try {
+      const user = await this.db.user.delete({ where: { id: id } });
+      if (!user) {
+        return true;
+      }
+      return false;
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+
   validatePassword = async (password: any, password1: any) => {
-    return compareSync(password, password1);
+    try {
+      return compareSync(password, password1);
+    } catch (error) {
+      throw new Error(error);
+    }
   };
+
   findUserByEmail = async (email: any): Promise<User> => {
     try {
       return await this.db.user.findUnique({ where: { email: email } });

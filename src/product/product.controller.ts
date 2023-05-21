@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from '@prisma/client';
 import { AuthGuard } from 'src/auth/auth.guard';
+import { productDto } from './product.dto';
 
 @Controller('product')
 export class ProductController {
@@ -21,8 +22,14 @@ export class ProductController {
 
   @UseGuards(AuthGuard)
   @Post('createProduct')
-  async createProduct(@Body() input: any): Promise<Product> {
+  async createProduct(@Body() input: productDto): Promise<Product> {
     return await this.productService.createProduct(input);
+  }
+
+  @UseGuards(AuthGuard)
+  @Post('updateProduct')
+  async updateProduct(@Body() input: productDto): Promise<Product> {
+    return await this.productService.updateProduct(input);
   }
 
   @UseGuards(AuthGuard)
