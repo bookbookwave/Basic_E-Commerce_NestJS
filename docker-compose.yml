@@ -1,21 +1,21 @@
 version: '3.1'
 
 services:
-  server:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: test_company
-    restart: always
-    ports:
-      - 3000:3000
-    volumes:
-      - ./:/usr/src/app
-      - /usr/src/app/node_modules/
-    depends_on:
-      - postgres
-    networks:
-      - test_company
+  # server:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: test_company
+  #   restart: always
+  #   ports:
+  #     - 3000:3000
+  #   volumes:
+  #     - ./:/usr/src/app
+  #     - /usr/src/app/node_modules/
+  #   depends_on:
+  #     - postgres
+  #   networks:
+  #     - test_company
       
   postgres:
     image: postgres
