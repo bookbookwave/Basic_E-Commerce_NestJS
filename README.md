@@ -32,6 +32,13 @@
 $ yarn install
 ```
 
+## Use Docker create Postgresql Service
+```bash
+#postgres port: 5432
+$docker compose up
+
+```
+
 ## Running the app
 
 ```bash
@@ -40,6 +47,8 @@ $ yarn run start
 
 # watch mode
 $ yarn run start:dev
+or
+$ yarn run dev
 
 # production mode
 $ yarn run start:prod
