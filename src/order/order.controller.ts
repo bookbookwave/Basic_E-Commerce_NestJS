@@ -1,20 +1,22 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { order } from '@prisma/client';
-import { characterDto, orderDto } from './order.dto';
+import { Order } from '@prisma/client';
+import { changeStatusDto, orderDto } from './order.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('order')
 export class OrderController {
   constructor(private orderService: OrderService) {}
 
+  @UseGuards(AuthGuard)
   @Post('createOrder')
-  async createOrder(@Body() input: orderDto): Promise<order> {
-    console.log('input :>> ', input);
+  async createOrder(@Body() input: orderDto): Promise<Order> {
     return await this.orderService.createOrder(input);
   }
+
+  @UseGuards(AuthGuard)
   @Post('changeStatus')
-  async changeStatus(@Body() input: characterDto): Promise<order> {
-    console.log('input :>> ', input);
+  async changeStatus(@Body() input: changeStatusDto): Promise<Order> {
     return await this.orderService.changeStatus(input);
   }
 }

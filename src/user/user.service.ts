@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 import { hashSync, compareSync } from 'bcryptjs';
-import { User, order } from '@prisma/client';
+import { User } from '@prisma/client';
 
 @Injectable()
 export class UserService {
@@ -37,10 +37,17 @@ export class UserService {
     try {
       const user = await this.db.user.findUnique({
         where: { email: email },
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          createdAt: true,
+          updatedAt: true,
+        },
       });
       const orderHistory = await this.db.order.findMany({
         where: { userId: user.id },
-        include: { user: true, OrderItem: true },
+        include: { OrderItem: true },
       });
       return { user, orderHistory };
     } catch (error) {

@@ -1,0 +1,7 @@
+Dockerfile
+.dockerignore
+node_modules
+yarn-error.log
+dist
+uploads/files
+uploads/images

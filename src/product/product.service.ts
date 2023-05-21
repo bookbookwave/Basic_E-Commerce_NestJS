@@ -11,7 +11,7 @@ export class ProductService {
   };
 
   getProductById = async (id: number): Promise<Product> => {
-    return await this.db.product.findUnique({ where: { id: id } });
+    return await this.db.product.findFirst({ where: { id: id } });
   };
 
   createProduct = async (input: any) => {

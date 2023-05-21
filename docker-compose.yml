@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: test_company
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules/
+    depends_on:
+      - postgres
+    networks:
+      - test_company
+      
+  postgres:
+    image: postgres
+    container_name: Backend_Postgres_Test
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespw
+      POSTGRES_DB: test_company
+    volumes:
+      - /var/lib/postgresql/data
+    networks:
+      - test_company
+
+networks:
+  test_company:
+    driver: bridge

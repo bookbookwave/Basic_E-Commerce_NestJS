@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  binaryTargets   = ["native", "linux-musl", "linux-arm64-openssl-3.0.x", "darwin-arm64"]
 }
 
 datasource db {
@@ -11,10 +12,10 @@ datasource db {
 }
 
 enum OrderStatus {
-  PENDING 
-  PROCESSING 
-  COMPLETED 
-  CANCELED 
+  PENDING
+  PROCESSING
+  COMPLETED
+  CANCELED
 }
 
 model User {
@@ -29,11 +30,12 @@ model User {
 }
 
 model Order {
-  id        Int      @id @default(autoincrement())
+  id        Int         @id @default(autoincrement())
   userId    String
+  total     Float       @default(0)
   status    OrderStatus
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 
   user User @relation(fields: [userId], references: [id])
 
@@ -45,6 +47,7 @@ model OrderItem {
   orderId   Int
   productId Int
   quantity  Int
+  price     Float    @default(0)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

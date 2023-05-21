@@ -16,7 +16,7 @@ export class orderDto {
   products: productDto[];
 }
 
-export class characterDto {
+export class changeStatusDto {
   @IsNotEmpty()
   id: number;
 
